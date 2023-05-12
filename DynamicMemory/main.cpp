@@ -314,12 +314,13 @@ int* Pop_back(int* arr, int& n)
 }
 int** pop_row_back(int** arr, int& rows, const int cols)
 {
-	int** buffer = new int* [rows - 1];
-	for (int i = 0; i < rows - 1; i++)buffer[i] = arr[i];
+	delete[] arr[rows - 1];
+	int** buffer = new int* [--rows];
+	for (int i = 0; i < rows; i++)buffer[i] = arr[i];
 	delete[] arr;
-	arr = buffer;
-	rows--;
-	return arr;
+	//arr = buffer;
+	//rows--;
+	return buffer;
 }
 void pop_cols_back(int** arr, const int rows, int& cols)
 {
