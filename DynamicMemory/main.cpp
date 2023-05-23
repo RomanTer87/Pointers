@@ -51,7 +51,7 @@ template<typename T> void Clear(T** arr, const int rows);
 void main()
 {
 	setlocale(LC_ALL, "");
-	typedef double DataType;
+	typedef int DataType;
 
 #ifdef dynamic_memory_1
 	int n;
@@ -296,7 +296,7 @@ template<typename T> void push_col_front(T** arr, const int rows, int& cols)
 {
 	for (int i = 0; i < rows; i++)
 	{
-		T* buffer = new T[cols + 1] {};
+		int* buffer = new int[cols + 1] {};
 		for (int j = 0; j < cols; j++)buffer[j + 1] = arr[i][j];
 		delete[] arr[i];
 		arr[i] = buffer;
