@@ -92,7 +92,7 @@ void main()
 	cout << "Введите количество строк: "; cin >> rows;
 	cout << "Введите количество элементов строки: "; cin >> cols;
 
-	DataType** arr = Allocate<DataType>(rows,cols);
+	DataType** arr = Allocate<DataType>(rows, cols);
 	FillRand(arr, rows, cols);
 	Print(arr, rows, cols);
 
@@ -170,7 +170,7 @@ void FillRand(char arr[], int n)
 {
 	for (int i = 0; i < n; i++)
 	{
-		*(arr+i) = rand();
+		*(arr + i) = rand();
 	}
 }
 void FillRand(int** arr, const int rows, const int cols)
@@ -233,7 +233,6 @@ template<typename T>T** push_row_back(T** arr, int& rows, const int cols)
 }
 template<typename T>void push_col_back(T** arr, const int rows, int& cols)
 {
-	//1) создаем буферную строку:
 	for (int i = 0; i < rows; i++)
 	{
 		arr[i] = Push_back(arr[i], cols, T());
@@ -293,15 +292,10 @@ template<typename T>void insert_col(T** arr, const int rows, int& cols, const in
 
 	for (int i = 0; i < rows; i++)
 	{
-		T* buffer = new T[cols + 1] {};
-		for (int j = 0; j < index; j++)buffer[j] = arr[i][j];
-		for (int j = index; j < cols; j++)buffer[j + 1] = arr[i][j];
-		delete[] arr[i];
-		arr[i] = buffer;
+		arr[i] = Insert(arr[i], cols, T(), index);
+		cols--;
 	}
 	cols++;
-	/*Insert(arr, cols, new T[cols]{}, index);
-	cols++;*/
 }
 template<typename T> T* Pop_back(T* arr, int& n)
 {
@@ -379,17 +373,14 @@ template<typename T> void erase_cols(T** arr, const int rows, int& cols, const i
 {
 	for (int i = 0; i < rows; i++)
 	{
-		T* buffer = new T[cols - 1];
-		for (int j = 0; j < index; j++) buffer[j] = arr[i][j];
-		for (int j = index; j < cols - 1; j++) buffer[j] = arr[i][j + 1];
-		delete[] arr[i];
-		arr[i] = buffer;
+		arr[i] = Erase(arr[i], cols, index);
+		cols++;
 	}
 	cols--;
 }
 template<typename T> T** Allocate(const int rows, const int cols)
 {
-	T** arr = new T* [rows];
+	T** arr = new T * [rows];
 	for (int i = 0; i < rows; i++)
 	{
 		arr[i] = new T[cols];
@@ -398,12 +389,10 @@ template<typename T> T** Allocate(const int rows, const int cols)
 }
 template<typename T> void Clear(T** arr, const int rows)
 {
-	// 1) Удаляем строки
 	for (int i = 0; i < rows; i++)
 	{
 		delete[] arr[i];
 	}
-	// 2) Удаляем массив указателей
 	delete[] arr;
 	//arr = nullptr;
 }
